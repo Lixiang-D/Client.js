@@ -385,7 +385,7 @@ describe('SparqlExpressionEvaluator', function () {
 
       it("should return a stringified version if passed a number", function () {
         evaluator({ '?a': '"3"^^http://www.w3.org/2001/XMLSchema#double' })
-          .should.equal('"3"^^http://www.w3.org/2001/XMLSchema#double');
+          .should.equal('"3"');
       });
     });
 
