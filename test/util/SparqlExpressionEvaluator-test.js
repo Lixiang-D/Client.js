@@ -393,12 +393,20 @@ describe('SparqlExpressionEvaluator', function () {
       var evaluator = SparqlExpressionEvaluator({
         type: 'operation',
         operator: 'http://www.w3.org/2001/XMLSchema#double',
-        args: ['"123"'],
+        args: ['?a'],
       });
 
       it('should return the literal as a double', function () {
-        evaluator({}).should.equal('"123.0"^^http://www.w3.org/2001/XMLSchema#double');
+        evaluator({'?a': '"123"'}).should.equal('"123.0"^^http://www.w3.org/2001/XMLSchema#double');
       });
+
+      it('should return the literal as a double', function () {
+        evaluator({'?a': '"1.23"'}).should.equal('"1.23"^^http://www.w3.org/2001/XMLSchema#double');
+      });
+
+      /*it('should throw error when non parseable value is passed', function () {
+        evaluator({'?a': '"aaa"'}).should.throw('aaa is not a valid xsd:double');
+      });*/
     });
 
     describe('of the bound operator', function () {
@@ -444,7 +452,7 @@ describe('SparqlExpressionEvaluator', function () {
     describe('of an operator with an incorrect number of arguments', function () {
       it('should throw an error', function () {
         (function () { SparqlExpressionEvaluator({ type: 'operation', operator: 'regex', args: [1] }); })
-          .should.throw('Invalid number of arguments for REGEX: 1 (expected: 2).');
+          .should.throw('Invalid number of arguments for REGEX: 1 (expected between bounds: {"min":2,"max":3}).');
       });
     });
 
